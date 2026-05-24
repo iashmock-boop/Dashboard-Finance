@@ -232,15 +232,15 @@ html, body, [class*="css"] {
     font-family: 'JetBrains Mono', monospace !important;
 }
 
-/* ── Hide Streamlit chrome ── */
-#MainMenu, footer, header { visibility: hidden; }
+/* ── Hide Streamlit chrome (Perbaikan: Elemen header tidak disembunyikan agar tombol panah > tetap muncul) ── */
+#MainMenu, footer { visibility: hidden; }
 .stDeployButton { display: none; }
 div[data-testid="stToolbar"] { visibility: hidden; }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Chart Theme ───────────────────────────────────────────────────────────────
-BG   = '#F8F9FA'  # Menyesuaikan dengan latar belakang aplikasi baru
+BG   = '#F8F9FA'
 AX_BG  = '#FFFFFF'
 GRID   = '#F1F3F5'
 SPINE  = '#E9ECEF'
