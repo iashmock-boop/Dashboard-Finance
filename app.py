@@ -476,7 +476,7 @@ if len(income_df) > 0 and len(expenses_df) > 0:
     fig, axes = plt.subplots(1, 2, figsize=(13, 4.0), gridspec_kw={'wspace': 0.16})
     fig.patch.set_facecolor(BG)
 
-    # ── CHART KIRI: Pemasukan vs Pengeluaran ──
+  # ── CHART KIRI: Pemasukan vs Pengeluaran (Dengan Label Angka) ──
     x = np.arange(len(monthly_data['Label']))
     width = 0.35
 
@@ -489,7 +489,29 @@ if len(income_df) > 0 and len(expenses_df) > 0:
     axes[0].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[0].grid(axis='y', zorder=0)
 
-    # FIX LEGEND: Tetap aman di bawah luar plot grafik
+    # Tambahkan batas atas sumbu Y sedikit (margin 15%) agar teks angka teratas tidak terpotong header
+    max_val_q1 = max(monthly_data['Income'].max(), monthly_data['Expense'].max())
+    axes[0].set_ylim(0, max_val_q1 * 1.15)
+
+    # FIX: Menambahkan label angka di atas batang Pemasukan (Hijau)
+    for bar in bars_in:
+        val = bar.get_height()
+        if val > 0: # Hanya menampilkan jika nilainya tidak nol
+            axes[0].text(bar.get_x() + bar.get_width()/2,
+                         val + max_val_q1 * 0.02,
+                         fmt_rp(val, short=True), ha='center', va='bottom',
+                         fontsize=8.5, color=TEXT, weight='600')
+
+    # FIX: Menambahkan label angka di atas batang Pengeluaran (Pink)
+    for bar in bars_out:
+        val = bar.get_height()
+        if val > 0:
+            axes[0].text(bar.get_x() + bar.get_width()/2,
+                         val + max_val_q1 * 0.02,
+                         fmt_rp(val, short=True), ha='center', va='bottom',
+                         fontsize=8.5, color=TEXT, weight='600')
+
+    # Kotak legend tetap aman berada di bawah luar plot grafik
     axes[0].legend(frameon=False, fontsize=9, labelcolor=LABEL,
                   loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
 
@@ -612,7 +634,7 @@ if len(expenses_df) > 0:
     # FIX: Membatasi ruang kosong sumbu X agar batang kiri & kanan tidak renggang jauh
     axes[0].set_xlim(0.0, 1.0) 
     
-    axes[0].set_title('Perbandingan Rerata Nilai: Weekday vs Weekend', weight='700')
+    axes[0].set_title('Perbandingan Rata rata Nilai: Weekday vs Weekend', weight='700')
     axes[0].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[0].grid(axis='y', zorder=0)
     
@@ -621,19 +643,31 @@ if len(expenses_df) > 0:
                      bar.get_height() + wkd_avg.max()*0.02,
                      fmt_rp(val, short=True), ha='center', fontsize=9, color=TEXT, fontweight='700')
 
-   # ── CHART KANAN: Per-day bar (Legend Dipindahkan Ke Bawah) ──
+ # ── CHART KANAN: Per-day bar (Ditambahkan Label Angka di Atas Batang) ──
     day_colors = [P['red'] if d in [5,6] else '#4A7BB0' for d in day_avg['DayOfWeek']]
     bars2 = axes[1].bar(day_avg['DayShort'], day_avg['Amount'], color=day_colors, width=0.48, zorder=3, edgecolor='none')
     
+    # Perbaikan Judul (Memakai Rata-rata)
     axes[1].set_title('Rata-rata Nilai Pengeluaran Harian', weight='700')
     axes[1].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='y', zorder=0)
-    
-    # Membuat patch untuk elemen legend
+
+    # Tambahkan batas atas sumbu Y sedikit (margin 15%) agar teks angka tidak mentok/terpotong
+    max_val_q3_right = day_avg['Amount'].max()
+    axes[1].set_ylim(0, max_val_q3_right * 1.15)
+
+    # FIX: Loop untuk memunculkan angka nominal di atas setiap batang harian
+    for bar in bars2:
+        val = bar.get_height()
+        if val > 0:
+            axes[1].text(bar.get_x() + bar.get_width()/2,
+                         val + max_val_q3_right * 0.02, # Jarak teks di atas batang
+                         fmt_rp(val, short=True), ha='center', va='bottom',
+                         fontsize=8.5, color=TEXT, weight='600')
+
+    # Memindahkan posisi legend ke bawah sumbu X secara horizontal
     wkend_p = mpatches.Patch(color=P['red'],  label='Weekend')
     wkday_p = mpatches.Patch(color='#4A7BB0', label='Weekday')
-    
-    # FIX: Memindahkan posisi legend ke bawah sumbu X secara horizontal
     axes[1].legend(handles=[wkday_p, wkend_p], frameon=False, fontsize=9, labelcolor=LABEL, 
                   loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
 
