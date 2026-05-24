@@ -458,50 +458,53 @@ def rp_fmt_axis(val, _):
 # ── Q1 — Cash Flow Analysis ───────────────────────────────────────────────────
 section(1, "Cash Flow Analysis", "Tren bulanan pemasukan & pengeluaran")
 
-monthly_cf = df.groupby(['Year','Month','Type'])['Amount'].sum().unstack(fill_value=0).reset_index()
-for c in ['EXPENSE','INCOME']:
-    if c not in monthly_cf.columns: monthly_cf[c] = 0
-monthly_cf['NCF']   = monthly_cf['INCOME'] - monthly_cf['EXPENSE']
-monthly_cf['Label'] = monthly_cf['Month'].map(MONTH_NAMES)
-monthly_cf = monthly_cf[monthly_cf['Label'].isin(sel_months)].copy()
-monthly_cf['_ord'] = monthly_cf['Label'].apply(lambda x: MONTH_ORDER.index(x) if x in MONTH_ORDER else 99)
-monthly_cf = monthly_cf.sort_values('_ord').reset_index(drop=True)
+if len(df) > 0:
+    # ── [Proses data bulanan seperti kode lamamu] ──
+    # ... (biarkan bagian pengolahan data bulanan tetap sama)
 
-if len(monthly_cf) >= 2:
-    fig, axes = plt.subplots(1, 2, figsize=(13, 4.0), gridspec_kw={'wspace':0.14})
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.0), gridspec_kw={'wspace': 0.16})
     fig.patch.set_facecolor(BG)
 
-    # Left: grouped bar
-    x = np.arange(len(monthly_cf))
-    w = 0.32
-    axes[0].bar(x - w/2, monthly_cf['INCOME'],  width=w, color=P['green'], label='Pemasukan', zorder=3, edgecolor='none')
-    axes[0].bar(x + w/2, monthly_cf['EXPENSE'], width=w, color=P['red2'],  label='Pengeluaran', zorder=3, edgecolor='none')
+    # ── CHART KIRI: Pemasukan vs Pengeluaran ──
+    x = np.arange(len(monthly_data['Label']))
+    width = 0.35
+
+    # Pembuatan batang grafik
+    bars_in  = axes[0].bar(x - width/2, monthly_data['Income'],  width, color=P['green'], label='Pemasukan', zorder=3, edgecolor='none')
+    bars_out = axes[0].bar(x + width/2, monthly_data['Expense'], width, color='#F3D1D1',  label='Pengeluaran', zorder=3, edgecolor='none')
+
+    axes[0].set_title('Pemasukan vs Pengeluaran', weight='700')
     axes[0].set_xticks(x)
-    axes[0].set_xticklabels(monthly_cf['Label'], fontsize=9)
+    axes[0].set_xticklabels(monthly_data['Label'], fontsize=9)
     axes[0].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[0].grid(axis='y', zorder=0)
-    axes[0].set_title('Pemasukan vs Pengeluaran', weight='700')
-    axes[0].legend(frameon=False, fontsize=9, labelcolor=LABEL, loc='upper right')
 
-    # Right: net CF bar
-    ncf_vals = monthly_cf['NCF'].values
-    colors_bar = [P['green'] if v >= 0 else P['red'] for v in ncf_vals]
-    axes[1].bar(x, ncf_vals, color=colors_bar, width=0.4, zorder=3, alpha=0.9, edgecolor='none')
-    axes[1].axhline(0, color=SPINE, linewidth=1.2, zorder=2)
-    axes[1].set_xticks(x)
-    axes[1].set_xticklabels(monthly_cf['Label'], fontsize=9)
+    # FIX LEGEND TERCUT / OVERLAP: Pindahkan posisi legend ke luar bawah sumbu X
+    axes[0].legend(frameon=False, fontsize=9, labelcolor=LABEL,
+                  loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
+
+
+    # ── CHART KANAN: Net Cash Flow Bulanan ──
+    # Batang Net Cash Flow
+    bars_net = axes[1].bar(monthly_data['Label'], monthly_data['Net'], color='#3B7A57', width=0.42, zorder=3, edgecolor='none')
+    
+    axes[1].set_title('Net Cash Flow Bulanan', weight='700')
     axes[1].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='y', zorder=0)
-    axes[1].set_title('Net Cash Flow Bulanan', weight='700')
-    for xi, val in zip(x, ncf_vals):
-        va = 'bottom' if val >= 0 else 'top'
-        offset = max(abs(ncf_vals))*0.03 if val >= 0 else -max(abs(ncf_vals))*0.05
-        axes[1].text(xi, val + offset, fmt_rp(val, short=True),
-                     ha='center', va=va, fontsize=8.5, color=TEXT, weight='600')
 
+    # Menambahkan teks nilai di atas batang Net Cash Flow
+    for bar, val in zip(bars_net, monthly_data['Net']):
+        axes[1].text(bar.get_x() + bar.get_width()/2,
+                     bar.get_height() + monthly_data['Net'].max()*0.02,
+                     fmt_rp(val, short=True), ha='center', va='bottom',
+                     fontsize=9, color=TEXT, weight='600')
+
+    # Atur padding keseluruhan agar posisi legend baru tidak terpotong saat dirender
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
 
+    # ── [Insight Box Q1] ──
+    # ... (biarkan fungsi insight() di bawahnya tetap sama)
     avg_ncf    = monthly_cf['NCF'].mean()
     worst_mth  = monthly_cf.loc[monthly_cf['NCF'].idxmin(), 'Label']
     pct_change = ((monthly_cf['NCF'].iloc[-1] - monthly_cf['NCF'].iloc[0]) / abs(monthly_cf['NCF'].iloc[0]) * 100
