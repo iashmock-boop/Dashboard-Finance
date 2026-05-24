@@ -458,10 +458,15 @@ def rp_fmt_axis(val, _):
 # ── Q1 — Cash Flow Analysis ───────────────────────────────────────────────────
 section(1, "Cash Flow Analysis", "Tren bulanan pemasukan & pengeluaran")
 
-if len(df) > 0:
-    # FIX VARIABEL: Menyelaraskan nama variabel dataframe bulanan
-    # Cek baris ini di kodemu, pastikan hasil akhir groupby dinamai 'monthly_data'
-    monthly_data = df.groupby(['Year', 'Month']).agg({'Income': 'sum', 'Expense': 'sum'}).reset_index()
+# Kembalikan ke logika dataframe asli milikmu
+if len(income_df) > 0 and len(expenses_df) > 0:
+    # 1. Agregasi Pemasukan Bulanan
+    inc_m = income_df.groupby(['Year', 'Month'])['Amount'].sum().reset_index().rename(columns={'Amount': 'Income'})
+    # 2. Agregasi Pengeluaran Bulanan
+    exp_m = expenses_df.groupby(['Year', 'Month'])['Amount'].sum().reset_index().rename(columns={'Amount': 'Expense'})
+    
+    # 3. Gabungkan keduanya menjadi monthly_data
+    monthly_data = pd.merge(inc_m, exp_m, on=['Year', 'Month'], how='outer').fillna(0)
     monthly_data['Label'] = monthly_data['Month'].map(MONTH_NAMES)
     monthly_data = monthly_data[monthly_data['Label'].isin(sel_months)].copy()
     monthly_data['_ord'] = monthly_data['Label'].apply(lambda x: MONTH_ORDER.index(x) if x in MONTH_ORDER else 99)
@@ -475,7 +480,6 @@ if len(df) > 0:
     x = np.arange(len(monthly_data['Label']))
     width = 0.35
 
-    # Pembuatan batang grafik menggunakan variabel monthly_data
     bars_in  = axes[0].bar(x - width/2, monthly_data['Income'],  width, color=P['green'], label='Pemasukan', zorder=3, edgecolor='none')
     bars_out = axes[0].bar(x + width/2, monthly_data['Expense'], width, color='#F3D1D1',  label='Pengeluaran', zorder=3, edgecolor='none')
 
@@ -485,7 +489,7 @@ if len(df) > 0:
     axes[0].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[0].grid(axis='y', zorder=0)
 
-    # Legenda aman di bawah
+    # FIX LEGEND: Tetap aman di bawah luar plot grafik
     axes[0].legend(frameon=False, fontsize=9, labelcolor=LABEL,
                   loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
 
@@ -503,7 +507,7 @@ if len(df) > 0:
                      fontsize=9, color=TEXT, weight='600')
 
     plt.tight_layout(pad=1.0)
-    st.pyplot(fig); plt.close()
+    st.pyplot(fig); plt.close()   
     avg_ncf    = monthly_cf['NCF'].mean()
     worst_mth  = monthly_cf.loc[monthly_cf['NCF'].idxmin(), 'Label']
     pct_change = ((monthly_cf['NCF'].iloc[-1] - monthly_cf['NCF'].iloc[0]) / abs(monthly_cf['NCF'].iloc[0]) * 100
