@@ -17,7 +17,7 @@ st.set_page_config(
 # ── Design System ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -27,58 +27,61 @@ html, body, [class*="css"] {
 
 /* ── App Background ── */
 .stApp {
-    background-color: #FAFAFA;
-    color: #242424;
+    background-color: #F8F9FA;
+    color: #2D3142;
 }
 
 /* ── Sidebar ── */
 [data-testid="stSidebar"] {
     background-color: #FFFFFF;
-    border-right: 1px solid #EDEDED;
+    border-right: 1px solid #E9ECEF;
 }
 [data-testid="stSidebar"] > div:first-child {
     padding-top: 0 !important;
 }
 [data-testid="stSidebar"] * {
-    color: #4A4A4A !important;
+    color: #495057 !important;
     font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 [data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"] {
     background-color: #1A1A1A !important;
     color: #FAFAFA !important;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-weight: 500;
 }
 [data-testid="stSidebar"] label {
-    font-size: 0.72rem !important;
-    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.1em !important;
-    color: #8C8C8C !important;
+    color: #8A92A6 !important;
+    margin-bottom: 6px !important;
 }
 
 /* ── Metric Cards ── */
-.kpi-row { display: flex; gap: 16px; margin: 0 0 32px 0; }
+.kpi-row { display: flex; gap: 20px; margin: 0 0 32px 0; }
 
 .kpi-card {
     flex: 1;
     background: #FFFFFF;
-    border: 1px solid #EDEDED;
-    border-radius: 8px;
+    border: 1px solid #E9ECEF;
+    border-radius: 12px;
     padding: 24px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .kpi-card:hover { 
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.04); 
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02); 
+    border-color: #DDE2E5;
 }
 
 .kpi-accent {
     position: absolute;
     top: 0; left: 0; bottom: 0;
-    width: 4px;
+    width: 5px;
 }
 .kpi-card.green  .kpi-accent { background: #1E6B4B; }
 .kpi-card.red    .kpi-accent { background: #A33333; }
@@ -86,142 +89,146 @@ html, body, [class*="css"] {
 .kpi-card.ink    .kpi-accent { background: #242424; }
 
 .kpi-label {
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #8C8C8C;
-    margin-bottom: 8px;
-    padding-left: 8px;
+    letter-spacing: 0.08em;
+    color: #8A92A6;
+    margin-bottom: 10px;
+    padding-left: 4px;
 }
 .kpi-value {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.6rem;
-    font-weight: 500;
-    color: #1A1A1A;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    padding-left: 8px;
+    font-size: 1.85rem;
+    font-weight: 600;
+    color: #1A1D20;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    padding-left: 4px;
 }
-.kpi-value.up   { color: #1E6B4B; font-weight: 600; }
-.kpi-value.down { color: #A33333; font-weight: 600; }
+.kpi-value.up   { color: #1E6B4B; }
+.kpi-value.down { color: #A33333; }
 .kpi-sub {
-    font-size: 0.75rem;
-    color: #A0A0A0;
-    margin-top: 8px;
-    font-weight: 400;
-    padding-left: 8px;
+    font-size: 0.8rem;
+    color: #6C757D;
+    margin-top: 10px;
+    font-weight: 500;
+    padding-left: 4px;
 }
 
 /* ── Section Headers ── */
 .section-wrap {
-    margin: 40px 0 20px;
+    margin: 54px 0 24px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid #EDEDED;
-    padding-bottom: 12px;
+    gap: 14px;
+    border-bottom: 2px solid #E9ECEF;
+    padding-bottom: 14px;
 }
 .section-num {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: #A0A0A0;
-    background: #F0F0F0;
-    padding: 2px 6px;
-    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #495057;
+    background: #E9ECEF;
+    padding: 3px 8px;
+    border-radius: 6px;
 }
 .section-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: #1A1A1A;
+    color: #1A1D20;
     margin: 0;
+    letter-spacing: -0.01em;
 }
 .section-desc {
-    font-size: 0.8rem;
-    color: #8C8C8C;
+    font-size: 0.88rem;
+    color: #8A92A6;
     margin-left: auto;
+    font-weight: 500;
 }
 
 /* ── Insight Box ── */
 .insight {
     background: #FFFFFF;
-    border: 1px solid #EDEDED;
-    border-left: 3px solid #2A5298;
-    border-radius: 4px;
-    padding: 16px 20px;
-    margin-top: 18px;
+    border: 1px solid #E9ECEF;
+    border-left: 4px solid #2A5298;
+    border-radius: 8px;
+    padding: 18px 24px;
+    margin-top: 24px;
     display: flex;
-    gap: 14px;
+    gap: 16px;
     align-items: flex-start;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.01);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 .insight-icon {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #2A5298;
     flex-shrink: 0;
+    margin-top: 1px;
 }
-.insight-body {}
+.insight-body { flex-grow: 1; }
 .insight-main {
-    font-size: 0.85rem;
-    color: #4A4A4A;
-    line-height: 1.6;
-    margin: 0 0 4px;
+    font-size: 0.9rem;
+    color: #343A40;
+    line-height: 1.65;
+    margin: 0 0 6px;
 }
-.insight-main strong { color: #1A1A1A; font-weight: 600; }
+.insight-main strong { color: #1A1D20; font-weight: 700; }
 .insight-rec {
-    font-size: 0.8rem;
-    color: #707070;
-    line-height: 1.5;
+    font-size: 0.85rem;
+    color: #495057;
+    line-height: 1.6;
 }
-.insight-rec strong { color: #2A5298; font-weight: 600; }
+.insight-rec strong { color: #2A5298; font-weight: 700; }
 
 /* ── Page Header ── */
 .page-header {
-    padding: 24px 0;
-    border-bottom: 1px solid #EDEDED;
-    margin-bottom: 32px;
+    padding: 28px 0 20px;
+    border-bottom: 2px solid #E9ECEF;
+    margin-bottom: 36px;
 }
 .page-eyebrow {
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: #8C8C8C;
-    margin-bottom: 6px;
+    color: #8A92A6;
+    margin-bottom: 8px;
     font-family: 'JetBrains Mono', monospace;
 }
 .page-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 2rem;
+    font-size: 2.25rem;
     font-weight: 800;
-    color: #1A1A1A;
-    margin: 0 0 6px;
+    color: #1A1D20;
+    margin: 0 0 8px;
     letter-spacing: -0.02em;
     line-height: 1.2;
 }
 .page-sub {
-    font-size: 0.88rem;
-    color: #707070;
+    font-size: 0.95rem;
+    color: #6C757D;
     font-weight: 400;
 }
 
 /* ── Sidebar Header ── */
 .sidebar-brand {
-    padding: 32px 16px 20px;
-    border-bottom: 1px solid #EDEDED;
-    margin-bottom: 24px;
+    padding: 36px 16px 24px;
+    border-bottom: 1px solid #E9ECEF;
+    margin-bottom: 28px;
 }
 .sidebar-brand-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #1A1A1A !important;
-    margin: 0 0 2px;
+    color: #1A1D20 !important;
+    margin: 0 0 4px;
 }
 .sidebar-brand-sub {
-    font-size: 0.7rem;
-    color: #8C8C8C !important;
+    font-size: 0.75rem;
+    color: #8A92A6 !important;
     font-family: 'JetBrains Mono', monospace !important;
 }
 
@@ -233,12 +240,12 @@ div[data-testid="stToolbar"] { visibility: hidden; }
 """, unsafe_allow_html=True)
 
 # ── Chart Theme ───────────────────────────────────────────────────────────────
-BG   = '#FFFFFF'
+BG   = '#F8F9FA'  # Menyesuaikan dengan latar belakang aplikasi baru
 AX_BG  = '#FFFFFF'
-GRID   = '#F5F5F5'
-SPINE  = '#EDEDED'
-LABEL  = '#8C8C8C'
-TEXT   = '#242424'
+GRID   = '#F1F3F5'
+SPINE  = '#E9ECEF'
+LABEL  = '#8A92A6'
+TEXT   = '#2D3142'
 
 plt.rcParams.update({
     'figure.facecolor':     BG,
@@ -246,22 +253,22 @@ plt.rcParams.update({
     'axes.edgecolor':       SPINE,
     'axes.labelcolor':      LABEL,
     'axes.titlecolor':      TEXT,
-    'axes.titlesize':       10.5,
-    'axes.titleweight':     '600',
-    'axes.titlepad':        14,
+    'axes.titlesize':       11,
+    'axes.titleweight':     '700',
+    'axes.titlepad':        16,
     'xtick.color':          LABEL,
     'ytick.color':          LABEL,
-    'xtick.labelsize':      8.5,
-    'ytick.labelsize':      8.5,
+    'xtick.labelsize':      9,
+    'ytick.labelsize':      9,
     'grid.color':           GRID,
-    'grid.linewidth':       0.8,
+    'grid.linewidth':       0.9,
     'text.color':           TEXT,
     'font.family':          'sans-serif',
     'axes.spines.top':      False,
     'axes.spines.right':    False,
     'axes.spines.left':     False,
     'axes.spines.bottom':   False,
-    'figure.dpi':           130,
+    'figure.dpi':           140,
 })
 
 P = {
@@ -316,7 +323,7 @@ with st.sidebar:
       <div class="sidebar-brand-sub">Jul – Des 2025</div>
     </div>""", unsafe_allow_html=True)
 
-    st.markdown("<p style='font-size:0.85rem; font-weight:700; margin-bottom:0px;'>Filter Kontrol</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:0.88rem; font-weight:700; margin-bottom:0px; color:#1A1D20;'>Filter Kontrol</p>", unsafe_allow_html=True)
     st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
 
     all_months = [m for m in MONTH_ORDER if m in df_raw['Month_Label'].unique()]
@@ -329,7 +336,7 @@ with st.sidebar:
     sel_accs = st.multiselect("Metode Pembayaran", all_accs, default=all_accs)
 
     st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
-    st.markdown(f"<div style='font-size:0.7rem;color:#8C8C8C;font-family:JetBrains Mono,monospace; background:#F5F5F5; padding:8px; border-radius:4px; text-align:center;'>{len(df_raw):,} total transaksi termuat</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='font-size:0.75rem; color:#495057; font-family:JetBrains Mono,monospace; background:#E9ECEF; padding:10px; border-radius:6px; text-align:center; font-weight:500;'>{len(df_raw):,} total transaksi termuat</div>", unsafe_allow_html=True)
 
 # ── Filtered Data ─────────────────────────────────────────────────────────────
 df = df_raw[
@@ -346,7 +353,7 @@ st.markdown("""
 <div class="page-header">
   <div class="page-eyebrow">Capstone Project · Analisis Keuangan Pribadi</div>
   <div class="page-title">Dashboard Keuangan Pribadi</div>
-  <div class="page-sub">Periode Analisis: Juli – Desember 2025 &nbsp;·&nbsp; Pemantauan Arus Kas Pasca Transaksi</div>
+  <div class="page-sub">Periode Analisis: <strong>Juli – Desember 2025</strong> &nbsp;·&nbsp; Pemantauan Arus Kas Pasca Transaksi</div>
 </div>""", unsafe_allow_html=True)
 
 # ── KPI Cards ─────────────────────────────────────────────────────────────────
@@ -413,7 +420,7 @@ monthly_cf['_ord'] = monthly_cf['Label'].apply(lambda x: MONTH_ORDER.index(x) if
 monthly_cf = monthly_cf.sort_values('_ord').reset_index(drop=True)
 
 if len(monthly_cf) >= 2:
-    fig, axes = plt.subplots(1, 2, figsize=(13, 3.8), gridspec_kw={'wspace':0.12})
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.0), gridspec_kw={'wspace':0.14})
     fig.patch.set_facecolor(BG)
 
     # Left: grouped bar
@@ -422,11 +429,11 @@ if len(monthly_cf) >= 2:
     axes[0].bar(x - w/2, monthly_cf['INCOME'],  width=w, color=P['green'], label='Pemasukan', zorder=3, edgecolor='none')
     axes[0].bar(x + w/2, monthly_cf['EXPENSE'], width=w, color=P['red2'],  label='Pengeluaran', zorder=3, edgecolor='none')
     axes[0].set_xticks(x)
-    axes[0].set_xticklabels(monthly_cf['Label'], fontsize=8.5)
+    axes[0].set_xticklabels(monthly_cf['Label'], fontsize=9)
     axes[0].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[0].grid(axis='y', zorder=0)
-    axes[0].set_title('Pemasukan vs Pengeluaran', weight='600')
-    axes[0].legend(frameon=False, fontsize=8.5, labelcolor=LABEL)
+    axes[0].set_title('Pemasukan vs Pengeluaran', weight='700')
+    axes[0].legend(frameon=False, fontsize=9, labelcolor=LABEL, loc='upper right')
 
     # Right: net CF bar
     ncf_vals = monthly_cf['NCF'].values
@@ -434,15 +441,15 @@ if len(monthly_cf) >= 2:
     axes[1].bar(x, ncf_vals, color=colors_bar, width=0.4, zorder=3, alpha=0.9, edgecolor='none')
     axes[1].axhline(0, color=SPINE, linewidth=1.2, zorder=2)
     axes[1].set_xticks(x)
-    axes[1].set_xticklabels(monthly_cf['Label'], fontsize=8.5)
+    axes[1].set_xticklabels(monthly_cf['Label'], fontsize=9)
     axes[1].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='y', zorder=0)
-    axes[1].set_title('Net Cash Flow Bulanan', weight='600')
+    axes[1].set_title('Net Cash Flow Bulanan', weight='700')
     for xi, val in zip(x, ncf_vals):
         va = 'bottom' if val >= 0 else 'top'
-        offset = max(abs(ncf_vals))*0.03 if val >= 0 else -max(abs(ncf_vals))*0.04
+        offset = max(abs(ncf_vals))*0.03 if val >= 0 else -max(abs(ncf_vals))*0.05
         axes[1].text(xi, val + offset, fmt_rp(val, short=True),
-                     ha='center', va=va, fontsize=8, color=TEXT, weight='500')
+                     ha='center', va=va, fontsize=8.5, color=TEXT, weight='600')
 
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
@@ -468,10 +475,10 @@ if len(expenses_df) > 0:
     top_cat = expense_by_cat.idxmax()
     top_pct = expense_by_cat.max() / expense_by_cat.sum() * 100
 
-    fig, axes = plt.subplots(1, 2, figsize=(13, 4.2), gridspec_kw={'wspace':0.15})
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.4), gridspec_kw={'wspace':0.18})
     fig.patch.set_facecolor(BG)
 
-    # Donut Chart dengan warna kustom eksklusif (bukan colormap default)
+    # Donut Chart 
     n = len(expense_by_cat)
     custom_colors = ['#2A5298', '#4A7BB0', '#72A1C6', '#9EC5DC', '#CBE5F0', '#EAF4F8']
     if n > len(custom_colors):
@@ -485,23 +492,23 @@ if len(expenses_df) > 0:
         startangle=90,
         colors=colors_donut,
         pctdistance=0.75,
-        wedgeprops={'linewidth': 2, 'edgecolor': BG, 'width': 0.55},
-        textprops={'fontsize': 8.5, 'color': TEXT}
+        wedgeprops={'linewidth': 2, 'edgecolor': 'white', 'width': 0.55},
+        textprops={'fontsize': 9, 'color': TEXT}
     )
-    for at in autotexts: at.set_color(TEXT); at.set_fontsize(8); at.set_fontweight('600')
-    axes[0].set_title('Proporsi Alokasi Total Pengeluaran', weight='600')
+    for at in autotexts: at.set_color(TEXT); at.set_fontsize(8.5); at.set_fontweight('700')
+    axes[0].set_title('Proporsi Alokasi Total Pengeluaran', weight='700')
 
     # Horizontal bar — avg monthly
     bars = axes[1].barh(avg_monthly_cat.index, avg_monthly_cat.values,
-                        color='#4A7BB0', height=0.5, zorder=3, edgecolor='none')
+                        color='#4A7BB0', height=0.52, zorder=3, edgecolor='none')
     axes[1].invert_yaxis()
-    axes[1].set_title('Rerata Pengeluaran Bulanan per Kategori', weight='600')
+    axes[1].set_title('Rerata Pengeluaran Bulanan per Kategori', weight='700')
     axes[1].xaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='x', zorder=0)
     for bar, val in zip(bars, avg_monthly_cat.values):
-        axes[1].text(val + avg_monthly_cat.max()*0.01,
+        axes[1].text(val + avg_monthly_cat.max()*0.02,
                      bar.get_y() + bar.get_height()/2,
-                     fmt_rp(val, short=True), va='center', fontsize=8, color=TEXT, weight='500')
+                     fmt_rp(val, short=True), va='center', fontsize=8.5, color=TEXT, weight='600')
 
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
@@ -528,29 +535,29 @@ if len(expenses_df) > 0:
     exp_copy['DayFull']  = exp_copy['DayOfWeek'].map(DAY_FULL)
     day_avg = exp_copy.groupby(['DayOfWeek','DayShort'])['Amount'].mean().reset_index().sort_values('DayOfWeek')
 
-    fig, axes = plt.subplots(1, 2, figsize=(13, 3.8), gridspec_kw={'wspace':0.12})
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.0), gridspec_kw={'wspace':0.14})
     fig.patch.set_facecolor(BG)
 
     # Weekday vs Weekend comparison
     bar_colors_wk = ['#2A5298', '#A33333']
-    bars = axes[0].bar(wkd_avg.index, wkd_avg.values, color=bar_colors_wk, width=0.3, zorder=3, edgecolor='none')
-    axes[0].set_title('Perbandingan Rerata Nilai: Weekday vs Weekend', weight='600')
+    bars = axes[0].bar(wkd_avg.index, wkd_avg.values, color=bar_colors_wk, width=0.32, zorder=3, edgecolor='none')
+    axes[0].set_title('Perbandingan Rerata Nilai: Weekday vs Weekend', weight='700')
     axes[0].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[0].grid(axis='y', zorder=0)
     for bar, val in zip(bars, wkd_avg.values):
         axes[0].text(bar.get_x() + bar.get_width()/2,
                      bar.get_height() + wkd_avg.max()*0.02,
-                     fmt_rp(val, short=True), ha='center', fontsize=8.5, color=TEXT, fontweight='600')
+                     fmt_rp(val, short=True), ha='center', fontsize=9, color=TEXT, fontweight='700')
 
     # Per-day bar
     day_colors = [P['red'] if d in [5,6] else '#4A7BB0' for d in day_avg['DayOfWeek']]
-    bars2 = axes[1].bar(day_avg['DayShort'], day_avg['Amount'], color=day_colors, width=0.45, zorder=3, edgecolor='none')
-    axes[1].set_title('Rerata Nilai Pengeluaran Harian', weight='600')
+    bars2 = axes[1].bar(day_avg['DayShort'], day_avg['Amount'], color=day_colors, width=0.48, zorder=3, edgecolor='none')
+    axes[1].set_title('Rerata Nilai Pengeluaran Harian', weight='700')
     axes[1].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='y', zorder=0)
     wkend_p = mpatches.Patch(color=P['red'],  label='Weekend')
     wkday_p = mpatches.Patch(color='#4A7BB0', label='Weekday')
-    axes[1].legend(handles=[wkday_p, wkend_p], frameon=False, fontsize=8.5, labelcolor=LABEL)
+    axes[1].legend(handles=[wkday_p, wkend_p], frameon=False, fontsize=9, labelcolor=LABEL, loc='upper right')
 
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
@@ -577,7 +584,7 @@ if len(income_df) > 0:
     selisih = max_inc['Amount'] - min_inc['Amount']
     avg_inc = monthly_inc['Amount'].mean()
 
-    fig, ax = plt.subplots(figsize=(13, 3.8))
+    fig, ax = plt.subplots(figsize=(13, 4.0))
     fig.patch.set_facecolor(BG)
 
     bar_cols = []
@@ -587,22 +594,22 @@ if len(income_df) > 0:
         else:                                  bar_cols.append('#B3C9DB')
 
     bars = ax.bar(monthly_inc['Label'], monthly_inc['Amount'],
-                  color=bar_cols, width=0.4, zorder=3, edgecolor='none')
+                  color=bar_cols, width=0.42, zorder=3, edgecolor='none')
     ax.axhline(avg_inc, color='#8C8C8C', linewidth=1.2, linestyle='--', zorder=4, label=f'Garis Rerata ({fmt_rp(avg_inc, short=True)})')
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     ax.grid(axis='y', zorder=0)
-    ax.set_title('Volatilitas Total Pemasukan Bulanan', weight='600')
+    ax.set_title('Volatilitas Total Pemasukan Bulanan', weight='700')
 
     for bar, val in zip(bars, monthly_inc['Amount']):
         ax.text(bar.get_x() + bar.get_width()/2,
-                bar.get_height() + monthly_inc['Amount'].max()*0.015,
+                bar.get_height() + monthly_inc['Amount'].max()*0.02,
                 fmt_rp(val, short=True), ha='center', va='bottom',
-                fontsize=8.5, color=TEXT, weight='500')
+                fontsize=9, color=TEXT, weight='600')
 
     hi_p  = mpatches.Patch(color=P['green'], label=f"Puncak — {max_inc['Label']}")
     lo_p  = mpatches.Patch(color='#D98888',  label=f"Lembah — {min_inc['Label']}")
     mid_p = mpatches.Patch(color='#B3C9DB', label='Normal')
-    ax.legend(handles=[hi_p, lo_p, mid_p], frameon=False, fontsize=8.5, labelcolor=LABEL, loc='upper right')
+    ax.legend(handles=[hi_p, lo_p, mid_p], frameon=False, fontsize=9, labelcolor=LABEL, loc='upper right')
 
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
@@ -625,27 +632,27 @@ if len(expenses_df) > 0:
     top_acc = pmt.iloc[0]
     n_acc   = len(pmt)
 
-    fig, axes = plt.subplots(1, 2, figsize=(13, 3.8), gridspec_kw={'wspace':0.12})
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.0), gridspec_kw={'wspace':0.14})
     fig.patch.set_facecolor(BG)
 
     # Frequency
-    bars1 = axes[0].bar(pmt['Account'], pmt['Frekuensi'], color='#2A5298', width=0.4, zorder=3, edgecolor='none')
-    axes[0].set_title('Frekuensi Intensitas Penggunaan', weight='600')
-    axes[0].set_ylabel('Jumlah Transaksi', color=LABEL, fontsize=8.5)
+    bars1 = axes[0].bar(pmt['Account'], pmt['Frekuensi'], color='#2A5298', width=0.42, zorder=3, edgecolor='none')
+    axes[0].set_title('Frekuensi Intensitas Penggunaan', weight='700')
+    axes[0].set_ylabel('Jumlah Transaksi', color=LABEL, fontsize=9)
     axes[0].grid(axis='y', zorder=0)
     for bar, val in zip(bars1, pmt['Frekuensi']):
-        axes[0].text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(pmt['Frekuensi'])*0.015,
-                     str(int(val)), ha='center', fontsize=8.5, color=TEXT, fontweight='600')
+        axes[0].text(bar.get_x() + bar.get_width()/2, bar.get_height() + max(pmt['Frekuensi'])*0.02,
+                     str(int(val)), ha='center', fontsize=9, color=TEXT, fontweight='700')
 
     # Avg value
-    bars2 = axes[1].bar(pmt['Account'], pmt['Rata_rata'], color='#E6A15C', width=0.4, zorder=3, edgecolor='none')
-    axes[1].set_title('Rerata Nilai Nominal per Transaksi', weight='600')
+    bars2 = axes[1].bar(pmt['Account'], pmt['Rata_rata'], color='#E6A15C', width=0.42, zorder=3, edgecolor='none')
+    axes[1].set_title('Rerata Nilai Nominal per Transaksi', weight='700')
     axes[1].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='y', zorder=0)
     for bar, val in zip(bars2, pmt['Rata_rata']):
         axes[1].text(bar.get_x() + bar.get_width()/2,
                      bar.get_height() + pmt['Rata_rata'].max()*0.02,
-                     fmt_rp(val, short=True), ha='center', fontsize=8, color=TEXT, weight='500')
+                     fmt_rp(val, short=True), ha='center', fontsize=8.5, color=TEXT, weight='600')
 
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
@@ -669,7 +676,7 @@ if len(expenses_df) > 0:
     min_day = daily.loc[daily['Amount'].idxmin()]
     selisih = max_day['Amount'] - min_day['Amount']
 
-    fig, ax = plt.subplots(figsize=(13, 3.8))
+    fig, ax = plt.subplots(figsize=(13, 4.0))
     fig.patch.set_facecolor(BG)
 
     day_cols = []
@@ -679,20 +686,20 @@ if len(expenses_df) > 0:
         else:
             day_cols.append('#4A7BB0' if row['DayOfWeek'] < 5 else '#F2A6A6')
 
-    bars = ax.bar(daily['DayShort'], daily['Amount'], color=day_cols, width=0.45, zorder=3, edgecolor='none')
+    bars = ax.bar(daily['DayShort'], daily['Amount'], color=day_cols, width=0.48, zorder=3, edgecolor='none')
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     ax.grid(axis='y', zorder=0)
-    ax.set_title('Akumulasi Beban Kapital Pengeluaran Berdasarkan Hari', weight='600')
+    ax.set_title('Akumulasi Beban Kapital Pengeluaran Berdasarkan Hari', weight='700')
 
     for bar, val in zip(bars, daily['Amount']):
         ax.text(bar.get_x() + bar.get_width()/2,
-                bar.get_height() + daily['Amount'].max()*0.015,
+                bar.get_height() + daily['Amount'].max()*0.02,
                 fmt_rp(val, short=True), ha='center', va='bottom',
-                fontsize=8.5, color=TEXT, weight='500')
+                fontsize=9, color=TEXT, weight='600')
 
     hi_p  = mpatches.Patch(color=P['red'],   label=f"Puncak Pengeluaran — Hari {exp_day[exp_day['DayOfWeek']==max_day['DayOfWeek']]['DayFull'].iloc[0]}")
     lo_p  = mpatches.Patch(color=P['green2'], label=f"Titik Hemat — Hari {exp_day[exp_day['DayOfWeek']==min_day['DayOfWeek']]['DayFull'].iloc[0]}")
-    ax.legend(handles=[hi_p, lo_p], frameon=False, fontsize=8.5, labelcolor=LABEL)
+    ax.legend(handles=[hi_p, lo_p], frameon=False, fontsize=9, labelcolor=LABEL, loc='upper right')
 
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
@@ -707,11 +714,11 @@ if len(expenses_df) > 0:
     )
 
 # ── Footer ────────────────────────────────────────────────────────────────────
-st.markdown("<div style='height:48px'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height:54px'></div>", unsafe_allow_html=True)
 st.markdown("""
-<div style='border-top:1px solid #EDEDED; padding-top:24px; margin-bottom: 24px;
+<div style='border-top:2px solid #E9ECEF; padding-top:24px; margin-bottom: 32px;
             display:flex; justify-content:between; align-items:center;
-            font-size:0.72rem; color:#A0A0A0; font-family:JetBrains Mono, monospace'>
+            font-size:0.75rem; color:#8A92A6; font-family:JetBrains Mono, monospace; font-weight:500;'>
   <span style='flex-grow: 1;'>◈ Personal Finance Tracker</span>
   <span>Capstone Project · Dicoding 2025</span>
 </div>""", unsafe_allow_html=True)
