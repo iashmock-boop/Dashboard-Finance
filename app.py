@@ -8,13 +8,13 @@ import seaborn as sns
 
 # ── Page Config ───────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Finance Tracker · Jul–Des 2025",
+    page_title="ArthaWise · Jul–Des 2025",
     page_icon="◈",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# ── Design System (Salin Bagian Ini untuk Tampilan Maksimal & Profesional) ──
+# ── Design System  ──
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=JetBrains+Mono:wght=300;400;500;600&display=swap');
@@ -550,7 +550,7 @@ if len(expenses_df) > 0:
     bars = axes[1].barh(avg_monthly_cat.index, avg_monthly_cat.values,
                         color='#4A7BB0', height=0.52, zorder=3, edgecolor='none')
     axes[1].invert_yaxis()
-    axes[1].set_title('Rerata Pengeluaran Bulanan per Kategori', weight='700')
+    axes[1].set_title('Rata rata Pengeluaran Bulanan per Kategori', weight='700')
     axes[1].xaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='x', zorder=0)
     for bar, val in zip(bars, avg_monthly_cat.values):
@@ -586,18 +586,28 @@ if len(expenses_df) > 0:
     fig, axes = plt.subplots(1, 2, figsize=(13, 4.0), gridspec_kw={'wspace':0.14})
     fig.patch.set_facecolor(BG)
 
-    # Weekday vs Weekend comparison
+    # ── CHART KIRI: Perbandingan Rerata Nilai (Rapat & Proporsional) ──
+    x_pos = [0.3, 0.7] # Mengatur koordinat posisi batang agar berdekatan
     bar_colors_wk = ['#2A5298', '#A33333']
-    bars = axes[0].bar(wkd_avg.index, wkd_avg.values, color=bar_colors_wk, width=0.32, zorder=3, edgecolor='none')
+    bars = axes[0].bar(x_pos, wkd_avg.values, color=bar_colors_wk, width=0.18, zorder=3, edgecolor='none')
+    
+    # Menentukan teks label sumbu X tepat di bawah masing-masing batang
+    axes[0].set_xticks(x_pos)
+    axes[0].set_xticklabels(wkd_avg.index, fontsize=9)
+    
+    # FIX: Membatasi ruang kosong sumbu X agar batang kiri & kanan tidak renggang jauh
+    axes[0].set_xlim(0.0, 1.0) 
+    
     axes[0].set_title('Perbandingan Rerata Nilai: Weekday vs Weekend', weight='700')
     axes[0].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[0].grid(axis='y', zorder=0)
+    
     for bar, val in zip(bars, wkd_avg.values):
         axes[0].text(bar.get_x() + bar.get_width()/2,
                      bar.get_height() + wkd_avg.max()*0.02,
                      fmt_rp(val, short=True), ha='center', fontsize=9, color=TEXT, fontweight='700')
 
-    # Per-day bar
+    # ── CHART KANAN: Per-day bar ──
     day_colors = [P['red'] if d in [5,6] else '#4A7BB0' for d in day_avg['DayOfWeek']]
     bars2 = axes[1].bar(day_avg['DayShort'], day_avg['Amount'], color=day_colors, width=0.48, zorder=3, edgecolor='none')
     axes[1].set_title('Rerata Nilai Pengeluaran Harian', weight='700')
@@ -654,21 +664,22 @@ if len(income_df) > 0:
                 fmt_rp(val, short=True), ha='center', va='bottom',
                 fontsize=9, color=TEXT, weight='600')
 
-    hi_p  = mpatches.Patch(color=P['green'], label=f"Puncak — {max_inc['Label']}")
-    lo_p  = mpatches.Patch(color='#D98888',  label=f"Lembah — {min_inc['Label']}")
+    # REVISI TEKS LEGEND: Mengubah Puncak/Lembah menjadi Tertinggi/Terendah
+    hi_p  = mpatches.Patch(color=P['green'], label=f"Pemasukan Tertinggi — {max_inc['Label']}")
+    lo_p  = mpatches.Patch(color='#D98888',  label=f"Pemasukan Terendah — {min_inc['Label']}")
     mid_p = mpatches.Patch(color='#B3C9DB', label='Normal')
     ax.legend(handles=[hi_p, lo_p, mid_p], frameon=False, fontsize=9, labelcolor=LABEL, loc='upper right')
 
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
 
+    # REVISI TEKS INSIGHT BOX: Mengubah istilah agar sinkron
     insight(
-        f"Inflow tertinggi diperoleh pada bulan <strong>{max_inc['Label']} 2025</strong> ({fmt_rp(max_inc['Amount'], short=True)}) "
-        f"sedangkan titik terendah ada pada <strong>{min_inc['Label']} 2025</strong> ({fmt_rp(min_inc['Amount'], short=True)}). "
+        f"Inflow **tertinggi** diperoleh pada bulan <strong>{max_inc['Label']} 2025</strong> ({fmt_rp(max_inc['Amount'], short=True)}) "
+        f"sedangkan titik **terendah** ada pada <strong>{min_inc['Label']} 2025</strong> ({fmt_rp(min_inc['Amount'], short=True)}). "
         f"Rentang deviasi gap pencapaian senilai <strong>{fmt_rp(selisih, short=True)}</strong>.",
         rec="Saat pemasukan berada di atas garis rata-rata bulanan, segera amankan surplus tersebut ke dalam instrumen likuid sebagai penyeimbang cash flow bulanan berikutnya."
     )
-
 # ── Q5 — Payment Method ───────────────────────────────────────────────────────
 section(5, "Payment Method Analysis", "Analisis preferensi intensitas instrumen pembayaran")
 
@@ -727,12 +738,15 @@ if len(expenses_df) > 0:
     fig, ax = plt.subplots(figsize=(13, 4.0))
     fig.patch.set_facecolor(BG)
 
+    # FIX LOGIKA WARNA: Hanya bedakan warna untuk nilai tertinggi dan terendah
     day_cols = []
     for i, row in daily.iterrows():
-        if row['Amount'] == daily['Amount'].max():   day_cols.append(P['red'])
-        elif row['Amount'] == daily['Amount'].min(): day_cols.append(P['green2'])
+        if row['Amount'] == daily['Amount'].max():
+            day_cols.append(P['red'])        # Warna merah untuk Puncak Pengeluaran
+        elif row['Amount'] == daily['Amount'].min():
+            day_cols.append(P['green2'])     # Warna hijau soft untuk Titik Hemat
         else:
-            day_cols.append('#4A7BB0' if row['DayOfWeek'] < 5 else '#F2A6A6')
+            day_cols.append('#4A7BB0')       # Warna biru netral untuk semua hari biasa lainnya
 
     bars = ax.bar(daily['DayShort'], daily['Amount'], color=day_cols, width=0.48, zorder=3, edgecolor='none')
     ax.yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
@@ -760,7 +774,6 @@ if len(expenses_df) > 0:
         f"Deviasi pengeluaran antar kedua hari tersebut berjarak sebesar <strong>{fmt_rp(selisih, short=True)}</strong>.",
         rec=f"Jadikan siklus hari {max_day_name} sebagai checkpoint evaluasi mingguan, dan biasakan untuk menahan atau menggeser transaksi non-esensial ke hari hemat."
     )
-
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown("<div style='height:54px'></div>", unsafe_allow_html=True)
 st.markdown("""
