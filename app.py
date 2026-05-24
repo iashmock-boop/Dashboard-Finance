@@ -14,7 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ── Design System ─────────────────────────────────────────────────────────────
+# ── Design System (Salin Bagian Ini untuk Menggantikan Blok Style Lama) ──
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=JetBrains+Mono:wght=300;400;500;600&display=swap');
@@ -43,12 +43,20 @@ html, body, [class*="css"] {
     color: #495057 !important;
     font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
+
+/* FIX: Mengubah warna background tag filter menjadi hitam dan teksnya WAJIB putih bersih */
 [data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"] {
     background-color: #1A1A1A !important;
-    color: #FAFAFA !important;
     border-radius: 6px;
     font-weight: 500;
 }
+[data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"] span {
+    color: #FFFFFF !important; /* Teks filter (Oktober, Belanja, dll) jadi putih */
+}
+[data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"] svg {
+    fill: #FFFFFF !important; /* Tombol silang 'x' jadi putih */
+}
+
 [data-testid="stSidebar"] label {
     font-size: 0.75rem !important;
     font-weight: 700 !important;
@@ -232,22 +240,34 @@ html, body, [class*="css"] {
     font-family: 'JetBrains Mono', monospace !important;
 }
 
-/* ── SOLUSI TOTAL: Mengembalikan Tombol Navigasi Sidebar ── */
+/* ── Hide Unnecessary Components ── */
 footer { visibility: hidden; }
 .stDeployButton { display: none; }
 
-/* Memastikan tombol panah > dipaksa muncul di pojok kiri atas */
+/* FIX WARNA TOMBOL: Membuat tombol panah pemicu sidebar mencolok dan berwarna biru-putih */
 button[data-testid="stSidebarCollapseAction"] {
-    background-color: #FFFFFF !important;
-    border: 1px solid #E9ECEF !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    background-color: #2A5298 !important; /* Mengubah background tombol jadi Biru */
+    border: 1px solid #1A365D !important;
+    box-shadow: 0 4px 12px rgba(42, 82, 152, 0.35) !important;
     display: flex !important;
     visibility: visible !important;
     position: fixed !important;
-    top: 12px !important;
-    left: 12px !important;
+    top: 15px !important;
+    left: 15px !important;
     z-index: 999999 !important;
     border-radius: 8px !important;
+    transition: background-color 0.2s ease;
+}
+
+/* Mengubah warna ikon panah dalam tombol menjadi putih bersih agar kelihatan jelas */
+button[data-testid="stSidebarCollapseAction"] svg {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+}
+
+/* Efek interaktif saat tombol panah disorot mouse */
+button[data-testid="stSidebarCollapseAction"]:hover {
+    background-color: #1A1A1A !important; /* Berubah jadi hitam saat di-hover */
 }
 </style>
 """, unsafe_allow_html=True)
