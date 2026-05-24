@@ -17,7 +17,7 @@ st.set_page_config(
 # ── Design System ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=JetBrains+Mono:wght=300;400;500;600&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -232,23 +232,22 @@ html, body, [class*="css"] {
     font-family: 'JetBrains Mono', monospace !important;
 }
 
-/* ── Perbaikan CSS: Memaksa Tombol Sidebar Muncul di Layar Kecil ── */
-#MainMenu, footer { visibility: hidden; }
+/* ── SOLUSI TOTAL: Mengembalikan Tombol Navigasi Sidebar ── */
+footer { visibility: hidden; }
 .stDeployButton { display: none; }
-div[data-testid="stToolbar"] { visibility: hidden; }
 
-/* Menghilangkan background header tapi menjaga tombol panah tetap berfungsi */
-header[data-testid="stHeader"] {
-    background: transparent !important;
-}
-/* Memposisikan tombol panah > agar turun sedikit dan selalu terlihat di pojok kiri atas */
+/* Memastikan tombol panah > dipaksa muncul di pojok kiri atas */
 button[data-testid="stSidebarCollapseAction"] {
     background-color: #FFFFFF !important;
     border: 1px solid #E9ECEF !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
-    top: 15px !important;
-    left: 15px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    display: flex !important;
+    visibility: visible !important;
+    position: fixed !important;
+    top: 12px !important;
+    left: 12px !important;
     z-index: 999999 !important;
+    border-radius: 8px !important;
 }
 </style>
 """, unsafe_allow_html=True)
