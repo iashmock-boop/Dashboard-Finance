@@ -459,8 +459,14 @@ def rp_fmt_axis(val, _):
 section(1, "Cash Flow Analysis", "Tren bulanan pemasukan & pengeluaran")
 
 if len(df) > 0:
-    # ── [Proses data bulanan seperti kode lamamu] ──
-    # ... (biarkan bagian pengolahan data bulanan tetap sama)
+    # FIX VARIABEL: Menyelaraskan nama variabel dataframe bulanan
+    # Cek baris ini di kodemu, pastikan hasil akhir groupby dinamai 'monthly_data'
+    monthly_data = df.groupby(['Year', 'Month']).agg({'Income': 'sum', 'Expense': 'sum'}).reset_index()
+    monthly_data['Label'] = monthly_data['Month'].map(MONTH_NAMES)
+    monthly_data = monthly_data[monthly_data['Label'].isin(sel_months)].copy()
+    monthly_data['_ord'] = monthly_data['Label'].apply(lambda x: MONTH_ORDER.index(x) if x in MONTH_ORDER else 99)
+    monthly_data = monthly_data.sort_values('_ord').reset_index(drop=True)
+    monthly_data['Net'] = monthly_data['Income'] - monthly_data['Expense']
 
     fig, axes = plt.subplots(1, 2, figsize=(13, 4.0), gridspec_kw={'wspace': 0.16})
     fig.patch.set_facecolor(BG)
@@ -469,7 +475,7 @@ if len(df) > 0:
     x = np.arange(len(monthly_data['Label']))
     width = 0.35
 
-    # Pembuatan batang grafik
+    # Pembuatan batang grafik menggunakan variabel monthly_data
     bars_in  = axes[0].bar(x - width/2, monthly_data['Income'],  width, color=P['green'], label='Pemasukan', zorder=3, edgecolor='none')
     bars_out = axes[0].bar(x + width/2, monthly_data['Expense'], width, color='#F3D1D1',  label='Pengeluaran', zorder=3, edgecolor='none')
 
@@ -479,32 +485,25 @@ if len(df) > 0:
     axes[0].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[0].grid(axis='y', zorder=0)
 
-    # FIX LEGEND TERCUT / OVERLAP: Pindahkan posisi legend ke luar bawah sumbu X
+    # Legenda aman di bawah
     axes[0].legend(frameon=False, fontsize=9, labelcolor=LABEL,
                   loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
 
-
     # ── CHART KANAN: Net Cash Flow Bulanan ──
-    # Batang Net Cash Flow
     bars_net = axes[1].bar(monthly_data['Label'], monthly_data['Net'], color='#3B7A57', width=0.42, zorder=3, edgecolor='none')
     
     axes[1].set_title('Net Cash Flow Bulanan', weight='700')
     axes[1].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='y', zorder=0)
 
-    # Menambahkan teks nilai di atas batang Net Cash Flow
     for bar, val in zip(bars_net, monthly_data['Net']):
         axes[1].text(bar.get_x() + bar.get_width()/2,
                      bar.get_height() + monthly_data['Net'].max()*0.02,
                      fmt_rp(val, short=True), ha='center', va='bottom',
                      fontsize=9, color=TEXT, weight='600')
 
-    # Atur padding keseluruhan agar posisi legend baru tidak terpotong saat dirender
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
-
-    # ── [Insight Box Q1] ──
-    # ... (biarkan fungsi insight() di bawahnya tetap sama)
     avg_ncf    = monthly_cf['NCF'].mean()
     worst_mth  = monthly_cf.loc[monthly_cf['NCF'].idxmin(), 'Label']
     pct_change = ((monthly_cf['NCF'].iloc[-1] - monthly_cf['NCF'].iloc[0]) / abs(monthly_cf['NCF'].iloc[0]) * 100
