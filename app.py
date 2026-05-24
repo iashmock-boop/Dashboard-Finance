@@ -367,7 +367,7 @@ DAY_FULL    = {0:'Senin',1:'Selasa',2:'Rabu',3:'Kamis',4:'Jumat',5:'Sabtu',6:'Mi
 with st.sidebar:
     st.markdown("""
     <div class="sidebar-brand">
-      <div class="sidebar-brand-title">◈ Finance Tracker</div>
+      <div class="sidebar-brand-title">◈ Arthawise </div>
       <div class="sidebar-brand-sub">Jul – Des 2025</div>
     </div>""", unsafe_allow_html=True)
 
@@ -417,7 +417,7 @@ cards = [
     (col1, "green",  "Total Pemasukan",  fmt_rp(total_income, short=True), "",    f"{len(income_df)} transaksi"),
     (col2, "red",    "Total Pengeluaran", fmt_rp(total_expense, short=True), "", f"{len(expenses_df)} transaksi"),
     (col3, "blue",   "Net Cash Flow",     f"{cf_sign} {fmt_rp(abs(net_cf), short=True)}", cf_class, "Surplus" if net_cf>=0 else "Defisit"),
-    (col4, "ink",    "Total Transaksi",   f"{len(df):,}", "",              f"Rerata {fmt_rp(avg_exp, short=True)}/txn"),
+    (col4, "ink",    "Total Transaksi",   f"{len(df):,}", "",              f"Rata rata {fmt_rp(avg_exp, short=True)}/txn"),
  ]
 for col, variant, label, value, val_class, sub in cards:
     with col:
@@ -705,7 +705,7 @@ if len(expenses_df) > 0:
 
     # Avg value
     bars2 = axes[1].bar(pmt['Account'], pmt['Rata_rata'], color='#E6A15C', width=0.42, zorder=3, edgecolor='none')
-    axes[1].set_title('Rerata Nilai Nominal per Transaksi', weight='700')
+    axes[1].set_title('Rata rata Nilai Nominal per Transaksi', weight='700')
     axes[1].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='y', zorder=0)
     for bar, val in zip(bars2, pmt['Rata_rata']):
