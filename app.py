@@ -14,7 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ── Design System (Salin Bagian Ini untuk Menggantikan Blok Style Lama) ──
+# ── Design System (Salin Bagian Ini untuk Tampilan Maksimal & Profesional) ──
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=JetBrains+Mono:wght=300;400;500;600&display=swap');
@@ -31,7 +31,7 @@ html, body, [class*="css"] {
     color: #2D3142;
 }
 
-/* ── Sidebar ── */
+/* ── Sidebar Style & Typography ── */
 [data-testid="stSidebar"] {
     background-color: #FFFFFF;
     border-right: 1px solid #E9ECEF;
@@ -44,26 +44,33 @@ html, body, [class*="css"] {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
-/* FIX: Mengubah warna background tag filter menjadi hitam dan teksnya WAJIB putih bersih */
+/* ── PROFESSIONAL FIX: Desain Tag Filter Multi-Select Premium ── */
 [data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"] {
-    background-color: #1A1A1A !important;
+    background-color: #2A5298 !important; /* Menggunakan warna brand utama */
     border-radius: 6px;
-    font-weight: 500;
+    padding: 4px 8px;
+    border: 1px solid #1A365D !important;
 }
 [data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"] span {
-    color: #FFFFFF !important; /* Teks filter (Oktober, Belanja, dll) jadi putih */
+    color: #FFFFFF !important; /* Teks filter putih bersih, kontras tinggi */
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
 }
 [data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"] svg {
-    fill: #FFFFFF !important; /* Tombol silang 'x' jadi putih */
+    fill: #FFFFFF !important; /* Icon silang (x) putih bersih */
+    transition: transform 0.2s ease;
+}
+[data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"]:hover svg {
+    transform: scale(1.15);
 }
 
 [data-testid="stSidebar"] label {
-    font-size: 0.75rem !important;
+    font-size: 0.72rem !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.1em !important;
+    letter-spacing: 0.12em !important;
     color: #8A92A6 !important;
-    margin-bottom: 6px !important;
+    margin-bottom: 8px !important;
 }
 
 /* ── Metric Cards ── */
@@ -244,34 +251,42 @@ html, body, [class*="css"] {
 footer { visibility: hidden; }
 .stDeployButton { display: none; }
 
-/* FIX WARNA TOMBOL: Membuat tombol panah pemicu sidebar mencolok dan berwarna biru-putih */
+/* ── PROFESSIONAL FIX: Desain Tombol Pemicu Sidebar Premium Minimalis ── */
 button[data-testid="stSidebarCollapseAction"] {
-    background-color: #2A5298 !important; /* Mengubah background tombol jadi Biru */
-    border: 1px solid #1A365D !important;
-    box-shadow: 0 4px 12px rgba(42, 82, 152, 0.35) !important;
+    background-color: #FFFFFF !important;
+    border: 1px solid #E9ECEF !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
     display: flex !important;
     visibility: visible !important;
     position: fixed !important;
-    top: 15px !important;
-    left: 15px !important;
+    top: 18px !important;
+    left: 18px !important;
     z-index: 999999 !important;
     border-radius: 8px !important;
-    transition: background-color 0.2s ease;
+    padding: 6px !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Mengubah warna ikon panah dalam tombol menjadi putih bersih agar kelihatan jelas */
+/* Warna ikon diatur abu-abu gelap korporat agar menyatu sempurna */
 button[data-testid="stSidebarCollapseAction"] svg {
-    color: #FFFFFF !important;
-    fill: #FFFFFF !important;
+    color: #495057 !important;
+    fill: #495057 !important;
+    width: 18px !important;
+    height: 18px !important;
 }
 
-/* Efek interaktif saat tombol panah disorot mouse */
+/* Efek hover profesional (Sedikit bergeser ke kanan & berubah warna aksen) */
 button[data-testid="stSidebarCollapseAction"]:hover {
-    background-color: #1A1A1A !important; /* Berubah jadi hitam saat di-hover */
+    background-color: #F8F9FA !important;
+    border-color: #2A5298 !important;
+    transform: translateX(2px);
+}
+button[data-testid="stSidebarCollapseAction"]:hover svg {
+    color: #2A5298 !important;
+    fill: #2A5298 !important;
 }
 </style>
 """, unsafe_allow_html=True)
-
 # ── Chart Theme ───────────────────────────────────────────────────────────────
 BG   = '#F8F9FA'
 AX_BG  = '#FFFFFF'
