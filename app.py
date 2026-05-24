@@ -607,16 +607,23 @@ if len(expenses_df) > 0:
                      bar.get_height() + wkd_avg.max()*0.02,
                      fmt_rp(val, short=True), ha='center', fontsize=9, color=TEXT, fontweight='700')
 
-    # ── CHART KANAN: Per-day bar ──
+   # ── CHART KANAN: Per-day bar (Legend Dipindahkan Ke Bawah) ──
     day_colors = [P['red'] if d in [5,6] else '#4A7BB0' for d in day_avg['DayOfWeek']]
     bars2 = axes[1].bar(day_avg['DayShort'], day_avg['Amount'], color=day_colors, width=0.48, zorder=3, edgecolor='none')
-    axes[1].set_title('Rerata Nilai Pengeluaran Harian', weight='700')
+    
+    axes[1].set_title('Rata-rata Nilai Pengeluaran Harian', weight='700')
     axes[1].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='y', zorder=0)
+    
+    # Membuat patch untuk elemen legend
     wkend_p = mpatches.Patch(color=P['red'],  label='Weekend')
     wkday_p = mpatches.Patch(color='#4A7BB0', label='Weekday')
-    axes[1].legend(handles=[wkday_p, wkend_p], frameon=False, fontsize=9, labelcolor=LABEL, loc='upper right')
+    
+    # FIX: Memindahkan posisi legend ke bawah sumbu X secara horizontal
+    axes[1].legend(handles=[wkday_p, wkend_p], frameon=False, fontsize=9, labelcolor=LABEL, 
+                  loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
 
+    # Menyesuaikan pad agar legend di bawah tidak terpotong saat dirender
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
 
