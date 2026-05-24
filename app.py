@@ -508,15 +508,23 @@ if len(income_df) > 0 and len(expenses_df) > 0:
 
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()   
-    avg_ncf    = monthly_cf['NCF'].mean()
-    worst_mth  = monthly_cf.loc[monthly_cf['NCF'].idxmin(), 'Label']
-    pct_change = ((monthly_cf['NCF'].iloc[-1] - monthly_cf['NCF'].iloc[0]) / abs(monthly_cf['NCF'].iloc[0]) * 100
-                  if monthly_cf['NCF'].iloc[0] != 0 else 0)
+   # ── CARI BARIS INI TEPAT DI BAWAH PLT.CLOSE() ──
+    # Ubah semua 'monthly_cf' menjadi 'monthly_data' agar sinkron dengan data grafik
+
+    avg_ncf    = monthly_data['Net'].mean() # <── Perbaikan variabel dari monthly_cf['NCF']
+    max_ncf    = monthly_data.loc[monthly_data['Net'].idxmax()]
+    min_ncf    = monthly_data.loc[monthly_data['Net'].idxmin()]
+    
+    # Ambil label bulan tertinggi dan terendah
+    max_cf_lbl = max_ncf['Label']
+    min_cf_lbl = min_ncf['Label']
+
+    # Pastikan variabel di dalam fungsi insight juga menggunakan monthly_data
     insight(
         f"Rata-rata net cash flow bulanan berada di angka <strong>{fmt_rp(avg_ncf, short=True)}</strong>. "
-        f"Titik defisit/terendah struktur kas terjadi pada bulan <strong>{worst_mth} 2025</strong>. "
-        f"Perubahan laju pertumbuhan kas dari bulan awal ke akhir sebesar <strong>{'+'if pct_change>=0 else ''}{pct_change:.1f}%</strong>.",
-        rec="Siapkan cadangan dana terpisah (sinking fund) di pertengahan tahun guna menghindari penurunan tajam surplus arus kas di kuartal akhir."
+        f"Akumulasi surplus tertinggi diamankan pada bulan <strong>{max_cf_lbl}</strong> ({fmt_rp(max_ncf['Net'], short=True)}), "
+        f"sedangkan titik selisih paling tipis terjadi di bulan <strong>{min_cf_lbl}</strong> ({fmt_rp(min_ncf['Net'], short=True)}).",
+        rec="Pertahankan konsistensi net cash flow positif ini dengan menerapkan alokasi auto-debit tabungan di awal bulan, sesaat setelah alokasi pemasukan utama masuk."
     )
 
 # ── Q2 — Spending per Category ────────────────────────────────────────────────
