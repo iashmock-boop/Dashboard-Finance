@@ -664,12 +664,16 @@ if len(income_df) > 0:
                 fmt_rp(val, short=True), ha='center', va='bottom',
                 fontsize=9, color=TEXT, weight='600')
 
-    # REVISI TEKS LEGEND: Mengubah Puncak/Lembah menjadi Tertinggi/Terendah
+   # FIX: Pindahkan legend ke bawah grafik agar tidak tumpang tindih
     hi_p  = mpatches.Patch(color=P['green'], label=f"Pemasukan Tertinggi — {max_inc['Label']}")
     lo_p  = mpatches.Patch(color='#D98888',  label=f"Pemasukan Terendah — {min_inc['Label']}")
     mid_p = mpatches.Patch(color='#B3C9DB', label='Normal')
-    ax.legend(handles=[hi_p, lo_p, mid_p], frameon=False, fontsize=9, labelcolor=LABEL, loc='upper right')
+    
+    # loc='upper center' dan bbox_to_anchor membuat legend berada di bawah sumbu X
+    ax.legend(handles=[hi_p, lo_p, mid_p], frameon=False, fontsize=9, labelcolor=LABEL, 
+              loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=3)
 
+    # Tambahkan pad sedikit di bawah agar legend tidak terpotong
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
 
@@ -759,10 +763,18 @@ if len(expenses_df) > 0:
                 fmt_rp(val, short=True), ha='center', va='bottom',
                 fontsize=9, color=TEXT, weight='600')
 
+   # ── KODE SEBELUMNYA (Bagian Bar & Batang) ──
+    # ... (biarkan kode pembuatan bar tetap sama)
+
+    # FIX: Pindahkan legend ke bawah grafik agar tidak tumpang tindih
     hi_p  = mpatches.Patch(color=P['red'],   label=f"Puncak Pengeluaran — Hari {exp_day[exp_day['DayOfWeek']==max_day['DayOfWeek']]['DayFull'].iloc[0]}")
     lo_p  = mpatches.Patch(color=P['green2'], label=f"Titik Hemat — Hari {exp_day[exp_day['DayOfWeek']==min_day['DayOfWeek']]['DayFull'].iloc[0]}")
-    ax.legend(handles=[hi_p, lo_p], frameon=False, fontsize=9, labelcolor=LABEL, loc='upper right')
+    
+    # Ditata horizontal (ncol=2) tepat di bawah grafik
+    ax.legend(handles=[hi_p, lo_p], frameon=False, fontsize=9, labelcolor=LABEL, 
+              loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
 
+    # Tambahkan pad sedikit di bawah agar legend tidak terpotong
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
 
