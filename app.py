@@ -232,10 +232,24 @@ html, body, [class*="css"] {
     font-family: 'JetBrains Mono', monospace !important;
 }
 
-/* ── Hide Streamlit chrome (Perbaikan: Elemen header tidak disembunyikan agar tombol panah > tetap muncul) ── */
+/* ── Perbaikan CSS: Memaksa Tombol Sidebar Muncul di Layar Kecil ── */
 #MainMenu, footer { visibility: hidden; }
 .stDeployButton { display: none; }
 div[data-testid="stToolbar"] { visibility: hidden; }
+
+/* Menghilangkan background header tapi menjaga tombol panah tetap berfungsi */
+header[data-testid="stHeader"] {
+    background: transparent !important;
+}
+/* Memposisikan tombol panah > agar turun sedikit dan selalu terlihat di pojok kiri atas */
+button[data-testid="stSidebarCollapseAction"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E9ECEF !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+    top: 15px !important;
+    left: 15px !important;
+    z-index: 999999 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -370,7 +384,7 @@ cards = [
     (col2, "red",    "Total Pengeluaran", fmt_rp(total_expense, short=True), "", f"{len(expenses_df)} transaksi"),
     (col3, "blue",   "Net Cash Flow",     f"{cf_sign} {fmt_rp(abs(net_cf), short=True)}", cf_class, "Surplus" if net_cf>=0 else "Defisit"),
     (col4, "ink",    "Total Transaksi",   f"{len(df):,}", "",              f"Rerata {fmt_rp(avg_exp, short=True)}/txn"),
-]
+ ]
 for col, variant, label, value, val_class, sub in cards:
     with col:
         st.markdown(f"""
