@@ -44,7 +44,7 @@ html, body, [class*="css"] {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
-/* ── PROFESSIONAL FIX: Desain Tag Filter Multi-Select Premium ── */
+/* ── Desain Tag Filter Multi-Select  ── */
 [data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"] {
     background-color: #2A5298 !important; /* Menggunakan warna brand utama */
     border-radius: 6px;
@@ -251,7 +251,7 @@ html, body, [class*="css"] {
 footer { visibility: hidden; }
 .stDeployButton { display: none; }
 
-/* ── PROFESSIONAL FIX: Desain Tombol Pemicu Sidebar Premium Minimalis ── */
+/* ──  Tombol Pemicu Sidebar  ── */
 button[data-testid="stSidebarCollapseAction"] {
     background-color: #FFFFFF !important;
     border: 1px solid #E9ECEF !important;
@@ -267,7 +267,7 @@ button[data-testid="stSidebarCollapseAction"] {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Warna ikon diatur abu-abu gelap korporat agar menyatu sempurna */
+/* Warna ikon diatur abu-abu gelap */
 button[data-testid="stSidebarCollapseAction"] svg {
     color: #495057 !important;
     fill: #495057 !important;
@@ -275,7 +275,7 @@ button[data-testid="stSidebarCollapseAction"] svg {
     height: 18px !important;
 }
 
-/* Efek hover profesional (Sedikit bergeser ke kanan & berubah warna aksen) */
+/* Efek hover */
 button[data-testid="stSidebarCollapseAction"]:hover {
     background-color: #F8F9FA !important;
     border-color: #2A5298 !important;
@@ -530,10 +530,8 @@ if len(income_df) > 0 and len(expenses_df) > 0:
 
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()   
-   # ── CARI BARIS INI TEPAT DI BAWAH PLT.CLOSE() ──
-    # Ubah semua 'monthly_cf' menjadi 'monthly_data' agar sinkron dengan data grafik
 
-    avg_ncf    = monthly_data['Net'].mean() # <── Perbaikan variabel dari monthly_cf['NCF']
+    avg_ncf    = monthly_data['Net'].mean() 
     max_ncf    = monthly_data.loc[monthly_data['Net'].idxmax()]
     min_ncf    = monthly_data.loc[monthly_data['Net'].idxmin()]
     
@@ -631,7 +629,7 @@ if len(expenses_df) > 0:
     axes[0].set_xticks(x_pos)
     axes[0].set_xticklabels(wkd_avg.index, fontsize=9)
     
-    # FIX: Membatasi ruang kosong sumbu X agar batang kiri & kanan tidak renggang jauh
+    # Membatasi ruang kosong sumbu X agar batang kiri & kanan tidak renggang jauh
     axes[0].set_xlim(0.0, 1.0) 
     
     axes[0].set_title('Perbandingan Rata rata Nilai: Weekday vs Weekend', weight='700')
@@ -647,7 +645,6 @@ if len(expenses_df) > 0:
     day_colors = [P['red'] if d in [5,6] else '#4A7BB0' for d in day_avg['DayOfWeek']]
     bars2 = axes[1].bar(day_avg['DayShort'], day_avg['Amount'], color=day_colors, width=0.48, zorder=3, edgecolor='none')
     
-    # Perbaikan Judul (Memakai Rata-rata)
     axes[1].set_title('Rata-rata Nilai Pengeluaran Harian', weight='700')
     axes[1].yaxis.set_major_formatter(mticker.FuncFormatter(rp_fmt_axis))
     axes[1].grid(axis='y', zorder=0)
@@ -656,7 +653,7 @@ if len(expenses_df) > 0:
     max_val_q3_right = day_avg['Amount'].max()
     axes[1].set_ylim(0, max_val_q3_right * 1.15)
 
-    # FIX: Loop untuk memunculkan angka nominal di atas setiap batang harian
+    # Loop untuk memunculkan angka nominal di atas setiap batang harian
     for bar in bars2:
         val = bar.get_height()
         if val > 0:
@@ -719,7 +716,7 @@ if len(income_df) > 0:
                 fmt_rp(val, short=True), ha='center', va='bottom',
                 fontsize=9, color=TEXT, weight='600')
 
-   # FIX: Pindahkan legend ke bawah grafik agar tidak tumpang tindih
+   # Pindahkan legend ke bawah grafik agar tidak tumpang tindih
     hi_p  = mpatches.Patch(color=P['green'], label=f"Pemasukan Tertinggi — {max_inc['Label']}")
     lo_p  = mpatches.Patch(color='#D98888',  label=f"Pemasukan Terendah — {min_inc['Label']}")
     mid_p = mpatches.Patch(color='#B3C9DB', label='Normal')
@@ -732,7 +729,7 @@ if len(income_df) > 0:
     plt.tight_layout(pad=1.0)
     st.pyplot(fig); plt.close()
 
-    # REVISI TEKS INSIGHT BOX: Mengubah istilah agar sinkron
+    # INSIGHT
     insight(
         f"Inflow **tertinggi** diperoleh pada bulan <strong>{max_inc['Label']} 2025</strong> ({fmt_rp(max_inc['Amount'], short=True)}) "
         f"sedangkan titik **terendah** ada pada <strong>{min_inc['Label']} 2025</strong> ({fmt_rp(min_inc['Amount'], short=True)}). "
@@ -797,7 +794,7 @@ if len(expenses_df) > 0:
     fig, ax = plt.subplots(figsize=(13, 4.0))
     fig.patch.set_facecolor(BG)
 
-    # FIX LOGIKA WARNA: Hanya bedakan warna untuk nilai tertinggi dan terendah
+    # Bbedakan warna untuk nilai tertinggi dan terendah
     day_cols = []
     for i, row in daily.iterrows():
         if row['Amount'] == daily['Amount'].max():
@@ -818,10 +815,8 @@ if len(expenses_df) > 0:
                 fmt_rp(val, short=True), ha='center', va='bottom',
                 fontsize=9, color=TEXT, weight='600')
 
-   # ── KODE SEBELUMNYA (Bagian Bar & Batang) ──
-    # ... (biarkan kode pembuatan bar tetap sama)
 
-    # FIX: Pindahkan legend ke bawah grafik agar tidak tumpang tindih
+    # Pindahkan legend ke bawah grafik agar tidak tumpang tindih
     hi_p  = mpatches.Patch(color=P['red'],   label=f"Puncak Pengeluaran — Hari {exp_day[exp_day['DayOfWeek']==max_day['DayOfWeek']]['DayFull'].iloc[0]}")
     lo_p  = mpatches.Patch(color=P['green2'], label=f"Titik Hemat — Hari {exp_day[exp_day['DayOfWeek']==min_day['DayOfWeek']]['DayFull'].iloc[0]}")
     
